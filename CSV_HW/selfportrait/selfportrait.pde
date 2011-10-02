@@ -3,6 +3,7 @@ float[] numbers;
 Date[] dates;
 String[] splits;
 String[] titles; 
+String[] dateTitles; 
 
 SimpleDateFormat df; 
 Date firstDate;
@@ -18,12 +19,12 @@ int columnCount;
 
 void setup() {
 
-  size(1500, 800);
+  size(1300, 800);
   colorMode(HSB);
   background(50, 122, 200, 200);
   smooth();
   rectMode (CORNERS); 
-  textMode (CENTER); 
+  textMode (CORNERS); 
 
   // Corners of the plotted time series
   plotX1 = 10;
@@ -31,11 +32,12 @@ void setup() {
   plotY1 = 100;
   plotY2 = height/3;
 
-  df = new SimpleDateFormat ("MM/dd/yyy"); 
+  df = new SimpleDateFormat ("MM/dd/yyyy"); 
 
   //Load the CSV
   String[] input = loadStrings("512024242409-0.csv");
- 
+  
+  dateTitles = new String [input.length -1]; 
   titles = new String [input.length - 1]; 
   numbers = new float[input.length - 1]; 
   dates = new Date [input.length - 1]; 
@@ -48,6 +50,7 @@ void setup() {
     splits = input[i].split(",");
     numbers[i - 1] = float(splits[6]);
     titles [i - 1] = splits[6];
+    dateTitles [i-1] = (splits[2]); 
     try {
       dates[i - 1] = df.parse(splits[2]);
     } 
@@ -89,9 +92,17 @@ void drawGraph() {
     fill(20);
     ellipse (x, y, plotX2/numbers.length, plotX2/numbers.length); 
     point(x, y); 
-    fill (255,50,50); 
-   textSize(plotX2/numbers.length);
-   text(titles[row], x+(plotX2/numbers.length), y);
+    fill (0); 
+   textSize(plotX2/numbers.length+5);
+   
+   pushMatrix(); 
+   translate (x, plotY2); 
+   rotate (HALF_PI); 
+   text(dateTitles[row], 0,0); 
+   popMatrix(); 
+   
+   //text(dateTitles[row], x+(plotX2/numbers.length), plotY2);
+   //text(titles[row], x+(plotX2/numbers.length), y);
    println (titles[row]); 
     //float locDate = map(dates[row].getTime(), firstDate.getTime(), lastDate.getTime(), 0, width);
     //colorMode(HSB);
