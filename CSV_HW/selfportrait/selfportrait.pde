@@ -45,7 +45,7 @@ void setup() {
   numbers = new float[input.length - 1]; 
   dates = new Date [input.length - 1]; 
   telNums = new String [input.length - 1]; 
-  
+
 
   //Convert the Strings into floats 
   for (int i =  1; i < input.length; i++) {  //start at 1 instead of 0 because of dataset
@@ -55,7 +55,7 @@ void setup() {
     titles [i - 1] = splits[6];
     dateTitles [i-1] = (splits[2]); 
     telNums [i-1] = splits [4];
-    //println (telNums); 
+
     try {
       dates[i - 1] = df.parse(splits[2]);
     } 
@@ -106,11 +106,13 @@ void drawGraph() {
     popMatrix(); 
 
 
-    if (telNums[row] == daddy) {
-    ellipse (x, y, plotX2/numbers.length+20, plotX2/numbers.length+20); 
-    println ("yay"); 
-    } else {
-    println ("boo"); 
+    if (telNums[row].equals(daddy) == true ) {
+      fill (255,255,255); 
+      ellipse (x, y, plotX2/numbers.length+8, plotX2/numbers.length+8); 
+      println (telNums[row] + " yay");
+    } 
+    else {
+      println (telNums[row] + " boo");
     }
 
     //text(dateTitles[row], x+(plotX2/numbers.length), plotY2);
@@ -122,9 +124,7 @@ void drawGraph() {
     //float loc = map (i, 0, 187, 10, width-10); 
     //rect(locDate, 20, (width-20)/numbers.length, (numbers[row]));
   }
-
 }
-
 
 
 
