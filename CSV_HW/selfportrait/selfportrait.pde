@@ -3,18 +3,27 @@ float[] numbers;
 Date[] dates;
 String[] splits;
 String[] titles; 
-String[] dateTitles; 
 String[] telNums; 
+
 
 String daddy = "714-854-5459";
 
 SimpleDateFormat df; 
+SimpleDateFormat days; 
 Date firstDate;
 Date lastDate; 
+
+int dateMin, dateMax; 
+int dateInterval; 
 
 float durMin, durMax; 
 float plotX1, plotY1;
 float plotX2, plotY2;
+
+int currentColumn = 0; 
+int columnCount; 
+
+PFont plotFont; 
 
 
 //-------------------------------------------------------------------------------------------------------
@@ -35,12 +44,16 @@ void setup() {
   plotY1 = 100;
   plotY2 = height/3;
 
+  plotFont = createFont("SansSerif", 20); 
+  textFont(plotFont); 
+
   df = new SimpleDateFormat ("MM/dd/yyyy"); 
+  //columnCount = data.getColumnCount(); 
 
   //Load the CSV
   String[] input = loadStrings("512024242409-0.csv");
 
-  dateTitles = new String [input.length -1]; 
+
   titles = new String [input.length - 1]; 
   numbers = new float[input.length - 1]; 
   dates = new Date [input.length - 1]; 
@@ -52,8 +65,7 @@ void setup() {
     noStroke();
     splits = input[i].split(",");
     numbers[i - 1] = float(splits[6]);
-    titles [i - 1] = splits[6];
-    dateTitles [i-1] = (splits[2]); 
+    titles [i - 1] = splits[6];   
     telNums [i-1] = splits [4];
 
     try {
@@ -61,10 +73,20 @@ void setup() {
     } 
     catch (Exception e) {
     }
+    
+  // dateDays[i] = toString.dateTitles[i];
+    
   }
 
+  //these are Dates 
   firstDate = dates[0]; 
   lastDate = dates[dates.length -1];
+
+  //these are ints -- difference? 
+  //dateMin = dates[0]; 
+  //dateMax = dates[dates.length-1]; 
+  dateInterval = 5; 
+
 
   durMin = 0; 
   durMax = max(numbers);
@@ -77,7 +99,14 @@ void draw() {
   fill(50, 122, 255, 200); 
   rect (plotX1, plotY1, plotX2, plotY2);
   //strokeWeight (5); 
+
+  fill(0); 
+  textSize(20); 
+  String title = ("Sept 2010"); 
+  text (title, plotX1, plotY1-10); 
+  drawDate(); 
   drawGraph();
+  
 }
 
 
@@ -99,35 +128,40 @@ void drawGraph() {
     fill (0); 
     textSize(plotX2/numbers.length+5);
 
-    pushMatrix(); 
-    translate (x, plotY2); 
-    rotate (HALF_PI); 
-    text(dateTitles[row], 0, 0); 
-    popMatrix(); 
+    /*  
+     pushMatrix(); 
+     translate (x, plotY2); 
+     rotate (HALF_PI); 
+     text(dateTitles[row], 0, 0); 
+     popMatrix(); 
+     */
 
-
+    // conditional if; clean this up
     if (telNums[row].equals(daddy) == true ) {
-      fill (255,255,255); 
-      ellipse (x, y, plotX2/numbers.length+8, plotX2/numbers.length+8); 
-      println (telNums[row] + " yay");
-    } 
-    else {
-      println (telNums[row] + " boo");
+      fill (255, 255, 255); 
+      noStroke(); 
+      ellipse (x, y, plotX2/numbers.length+8, plotX2/numbers.length+8);
     }
-
-    //text(dateTitles[row], x+(plotX2/numbers.length), plotY2);
-    //text(titles[row], x+(plotX2/numbers.length), y);
-    //float locDate = map(dates[row].getTime(), firstDate.getTime(), lastDate.getTime(), 0, width);
-    //colorMode(HSB);
-    //stroke(20+(i*2), 200, 24, 100);
-    //fill(20);
-    //float loc = map (i, 0, 187, 10, width-10); 
-    //rect(locDate, 20, (width-20)/numbers.length, (numbers[row]));
   }
 }
 
 
 
+//-------------------------------------------------------------------------------------------------------
 
 
+void drawDate() {
+  fill (0);
+  textSize(10); 
+  textAlign(CENTER, TOP); 
+  for (int row = 0; row < dates.length; row++) {
+      float x = map (dates[row].getTime(), firstDate.getTime(), lastDate.getTime(), plotX1, plotX2);
+      text (dates[row].getDate(), x, plotY2 + 10); 
+    if (dates[row].getDate() % dateInterval == 0) {
+      stroke (224); 
+      strokeWeight(1); 
+      line (x, plotY1, x, plotY2); 
+    }
+  }
+}
 
