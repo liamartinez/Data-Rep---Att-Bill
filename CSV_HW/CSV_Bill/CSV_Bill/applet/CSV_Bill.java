@@ -1,3 +1,30 @@
+import processing.core.*; 
+import processing.xml.*; 
+
+import java.applet.*; 
+import java.awt.Dimension; 
+import java.awt.Frame; 
+import java.awt.event.MouseEvent; 
+import java.awt.event.KeyEvent; 
+import java.awt.event.FocusEvent; 
+import java.awt.Image; 
+import java.io.*; 
+import java.net.*; 
+import java.text.*; 
+import java.util.*; 
+import java.util.zip.*; 
+import java.util.regex.*; 
+
+public class CSV_Bill extends PApplet {
+
+
+/*
+
+Static CSV HW for Data Rep
+Lia Martinez, 08/04/2011
+
+*/
+
 
 float[] numbers;
 Date[] dates;
@@ -35,7 +62,7 @@ String [] months = new String[] {
 //-------------------------------------------------------------------------------------------------------
 
 
-void setup() {
+public void setup() {
   size(1300, 500);
   colorMode(HSB);
   smooth();
@@ -58,7 +85,7 @@ void setup() {
   files = new String [13]; 
   for (int i = 0; i < files.length; i++) {
     files[i] = ("512024242409-"+i+".csv");
-    println(files[i]);
+    println("loading " + files[i]);
   } 
 
   currentFile = 0;
@@ -68,7 +95,7 @@ void setup() {
 
 //-------------------------------------------------------------------------------------------------------
 
-void draw() {
+public void draw() {
   background(50, 122, 180, 200);
   noFill();
   stroke(244); 
@@ -89,7 +116,7 @@ void draw() {
 
 //-------------------------------------------------------------------------------------------------------
 
-void drawGraph(String title) {
+public void drawGraph(String title) {
 
   drawDuration();
   drawDate(); 
@@ -130,7 +157,7 @@ void drawGraph(String title) {
 //-------------------------------------------------------------------------------------------------------
 
 
-void drawDate() {
+public void drawDate() {
   fill (0);
   textAlign(CENTER, TOP); 
   rectMode (CENTER);
@@ -152,7 +179,7 @@ void drawDate() {
 
 //---------------------------------------------------------------------------------------------------------
 
-void drawDuration() {
+public void drawDuration() {
   fill (0);
   textSize (10); 
   textAlign (RIGHT, CENTER); 
@@ -168,7 +195,7 @@ void drawDuration() {
 
 //---------------------------------------------------------------------------------------------------------
 
-void setupStrings (String file) {
+public void setupStrings (String file) {
 
   String[] input = loadStrings(file);
 
@@ -182,7 +209,7 @@ void setupStrings (String file) {
   for (int i =  1; i < input.length; i++) {  //start at 1 instead of 0 because of dataset
     noStroke();
     splits = input[i].split(",");
-    numbers[i - 1] = float(splits[6]);
+    numbers[i - 1] = PApplet.parseFloat(splits[6]);
     titles [i - 1] = splits[6];   
     telNums [i-1] = splits [4];
     days [i-1] = splits[1]; 
@@ -203,7 +230,7 @@ void setupStrings (String file) {
 
 //-----------------------------------------------------------------------------------------------------------------------------------------
 
-void mainText() {
+public void mainText() {
   //main title
   textAlign(CENTER);
   rectMode(CORNER); 
@@ -233,7 +260,7 @@ void mainText() {
 }
 //---------------------------------------------------------------------------------------------------------
 
-void keyPressed() { 
+public void keyPressed() { 
   if (key == CODED) {
   if (keyCode == LEFT) {
     currentFile --;
@@ -251,3 +278,7 @@ void keyPressed() {
 }
 
 
+  static public void main(String args[]) {
+    PApplet.main(new String[] { "--bgcolor=#FFFFFF", "CSV_Bill" });
+  }
+}

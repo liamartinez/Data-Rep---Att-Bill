@@ -1,4 +1,12 @@
 
+/*
+
+Static CSV HW for Data Rep
+Lia Martinez, 08/04/2011
+
+*/
+
+
 float[] numbers;
 Date[] dates;
 String[] splits;
@@ -58,7 +66,7 @@ void setup() {
   files = new String [13]; 
   for (int i = 0; i < files.length; i++) {
     files[i] = ("512024242409-"+i+".csv");
-    println(files[i]);
+    println("loading " + files[i]);
   } 
 
   currentFile = 0;
