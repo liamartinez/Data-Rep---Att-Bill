@@ -99,25 +99,30 @@ void draw() {
   background(50, 122, 200, 200);
   //fill(50, 122, 255, 200); 
   noFill();
-  //stroke(244); 
-  //strokeWeight (5); 
-  rect (plotX1, plotY1, plotX2, plotY2);
+  stroke(244); 
+  strokeWeight (1);
+  //noStroke(); 
+  rectMode (CORNERS);
+  rect (plotX1-5, plotY1, plotX2, plotY2);
 
 
-  fill(0); 
-  textAlign(LEFT, BOTTOM); 
-  textSize(20); 
-  String title = ("August 2010"); 
-  text (title, plotX1, plotY1-10); 
-  drawDate(); 
-  drawGraph();
-  drawDuration();
+
+  drawGraph("August 2010");
 }
 
 
 //-------------------------------------------------------------------------------------------------------
 
-void drawGraph() {
+void drawGraph(String title) {
+  
+  drawDuration();
+  drawDate(); 
+  
+  textAlign(LEFT, BOTTOM); 
+  rectMode (CENTER);
+  textSize(20); 
+  text (title, plotX1, plotY1-10); 
+  noStroke(); 
 
   for (int row = 0; row < numbers.length; row++) {
 
@@ -130,15 +135,20 @@ void drawGraph() {
     textSize(plotX2/numbers.length+5);
 
 
-    // conditional if; clean this up
+    // conditional; clean this up
     if (telNums[row].equals(daddy) == true ) {
-      fill(80, 150, 255, 200); 
-      noStroke(); 
-      ellipse (x, y, plotX2/numbers.length+8, plotX2/numbers.length+8);
+      fill(150, 150, 255, 200); 
+      rect (x, y, plotX2/numbers.length+5, plotX2/numbers.length);
+      
+      
     } 
     else if (telNums[row].equals(mommy) == true) {
       fill(250, 150, 255, 200); 
-      ellipse (x, y, plotX2/numbers.length+8, plotX2/numbers.length+8);
+      rect (x, y, plotX2/numbers.length+5, plotX2/numbers.length);
+    } 
+    else {
+      fill(240, 200); 
+      rect (x, y, plotX2/numbers.length+5, plotX2/numbers.length);
     }
   }
 }
@@ -152,6 +162,7 @@ void drawDate() {
   fill (0);
 
   textAlign(CENTER, TOP); 
+  ellipseMode (CENTER); 
   for (int row = 0; row < dates.length; row++) {
     float x = map (dates[row].getTime(), firstDate.getTime(), lastDate.getTime(), plotX1, plotX2);
     textSize(10); 
@@ -163,15 +174,6 @@ void drawDate() {
       strokeWeight(1);        
       line (x, plotY1, x, plotY2);
     }
-
-    /*  
-     if (dates[row].getDate() % dateInterval == 0) {
-     stroke (215); 
-     strokeWeight(1);        
-     line (x, plotY1, x, plotY2); 
-     text (dates[row].getDate(), x, plotY2 + 20); 
-     }
-     */
   }
 }
 
@@ -179,13 +181,16 @@ void drawDate() {
 //---------------------------------------------------------------------------------------------------------
 
 void drawDuration() {
-   fill (0);
+  fill (0);
   textSize (10); 
   textAlign (RIGHT, CENTER); 
 
   for (float i = durMin; i < durMax; i += durInterval) {
     float y = map (i, durMin, durMax, plotY2, plotY1);
-    text (floor(i), plotX1 - 40, y);
+    stroke (215); 
+    strokeWeight(1);      
+    text (floor(i), plotX1 - 10, y);
+    //line (plotX1 - 5, y, plotX1+5, y);
   }
 }
 
